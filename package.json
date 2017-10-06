@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "sol-merger": "^0.1.0",
     "truffle-hdwallet-provider": "^0.0.3"
   }
 }
