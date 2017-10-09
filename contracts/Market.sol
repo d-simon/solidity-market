@@ -1,9 +1,9 @@
 pragma solidity >= 0.4.15;
 import "./zeppelin/ownership/Ownable.sol";
-import "./Whitelisted.sol";
+import "./Whitelistable.sol";
 import "./ReputationToken.sol";
 
-contract Market is Whitelisted {
+contract Market is Whitelistable {
 
   event OfferAdded(uint indexed id, string product, uint price);
   event OfferTaken(uint indexed id);
@@ -35,7 +35,7 @@ contract Market is Whitelisted {
   }
 
   function addOffer(string product, uint price, address arbiter)
-  restricted returns (uint) {
+  onlyWhitelisted returns (uint) {
     offers.push(Offer({
       product: product,
       price: price,
@@ -60,7 +60,7 @@ contract Market is Whitelisted {
   }
 
   function takeOffer(uint id, address arbiter)
-  inState(id, Status.OFFERED) payable restricted {
+  inState(id, Status.OFFERED) payable onlyWhitelisted {
     Offer storage offer = offers[id];
     require(offer.creator != msg.sender);
     require(offer.price == msg.value);
